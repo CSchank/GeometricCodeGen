@@ -2,6 +2,7 @@
 
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage[compress, numbers]{natbib} % Bibliography formatting
 
 \title{Problem Statement and Goals\\\progname}
 
@@ -22,15 +23,41 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
+January 17th, 2025 & Christopher Schankula & Initial version of problem statement\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \section{Problem Statement}
 
+This section describes the problem that will be solved in this project. We start by
+presenting background information related to matrices, vectors and tensors. We then
+provide a high-level description of the problem, followed by an overview of the
+stakeholders and environment in which the resulting software will run.
+
+\subsection{Background}
+
+This section describes background on matrices, vectors, tensors, and the Drasil
+project.
+
+\subsubsection{Matrices, Vectors, and Tensors}
+
+A matrix is a rectangular table of numbers, symbols or expressions which
+are used to represent some mathematical object or concept. They are used in
+linear algebra, physics, and number theory, among other 
+fields~\cite{Wikipedia_Matrix_2025}. Meanwhile, a vector is a ``quantities that 
+cannot be expressed by a single number (a scalar)''~\cite{Wikipedia_Vectors_2024}.
+A vector can be seen as a sort of one-dimensional matrix. Similarly to matrices,
+vectors are used in a wide variety of scientific fields.
+
+A tensor is a type of mathematical objects that describe a relationship
+between matrices, vectors, or other tensors~\cite{Wikipedia_Tensors_2025}. 
+The relationship is a multilinear map, meaning it is a function of several 
+linear inputs~\cite{Wikipedia_Multilinear_2024}. Tensors can be used to solve
+important physics problems, including in mechanics, electrodynamics, and general
+relativity~\cite{Wikipedia_Tensors_2025}.
+
+\subsection{Drasil Project}
 
 \wss{You should check your problem statement with the
 \href{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/ProbState-Checklist.pdf}
@@ -40,11 +67,24 @@ Date2 & Name(s) & Description of changes\\
 information.}
 
 \subsection{Problem}
+Currently, vectors and matrices in Drasil are implemented in a way that does not 
+promote the correctness of algorithms using them. For calculations on matrices,
+vectors and tensors to be correct, it is necessary to ensure certain properties
+about them, including the sizes of operands. Furthermore, current implementations
+of matrices and vectors in Drasil support only fixed fixed sizes. 
+
+The problem being solved in this project will be to allow the specification of
+tensors, matrices, and vectors and document and code  generation associated with them.
 
 \subsection{Inputs and Outputs}
 
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
+The inputs to the system will be a representation of operations using tensors
+(matrices and vectors will be built on top of tensors). The outputs from the
+system will be documents describing the operations specified in the inputs and
+code in several supported languages to compute the operations described.
+
+% \wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
+% Use abstraction so that you can avoid details.}
 
 \subsection{Stakeholders}
 
@@ -76,19 +116,8 @@ instructor, can be modified over the course of the term.}
 
 \newpage{}
 
-\section*{Appendix --- Reflection}
-
-\wss{Not required for CAS 741}
-
-\input{../Reflection.tex}
-
-\begin{enumerate}
-    \item What went well while writing this deliverable? 
-    \item What pain points did you experience during this deliverable, and how
-    did you resolve them?
-    \item How did you and your team adjust the scope of your goals to ensure
-    they are suitable for a Capstone project (not overly ambitious but also of
-    appropriate complexity for a senior design project)?
-\end{enumerate}  
+\section{References}
+\bibliographystyle{abbrvnat}
+\bibliography{Bib}
 
 \end{document}
