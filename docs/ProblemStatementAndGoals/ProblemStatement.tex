@@ -3,6 +3,7 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage[compress, numbers]{natbib} % Bibliography formatting
+\usepackage{enumitem}
 
 \title{Problem Statement and Goals\\\progname}
 
@@ -23,7 +24,7 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-January 17th, 2025 & Christopher Schankula & Initial version of problem statement\\
+January 19th, 2025 & Christopher Schankula & Initial version of problem statement\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -59,22 +60,29 @@ relativity~\cite{Wikipedia_Tensors_2025}.
 
 \subsection{Drasil Project}
 
-\wss{You should check your problem statement with the
-\href{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/ProbState-Checklist.pdf}
-{problem statement checklist}.} 
+Drasil is a system that takes advantage of the inherent duplication in knowledge in a
+software engineering project (e.g.~code, specification, testing, etc.). By capturing
+this knowledge once and generating these artifacts, they can be kept up-to-date and
+lead to more robust software~\cite{Carette_Drasil_2021}.
 
-\wss{You can change the section headings, as long as you include the required
-information.}
+% \wss{You should check your problem statement with the
+% \href{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/ProbState-Checklist.pdf}
+% {problem statement checklist}.} 
+
+% \wss{You can change the section headings, as long as you include the required
+% information.}
 
 \subsection{Problem}
 Currently, vectors and matrices in Drasil are implemented in a way that does not 
 promote the correctness of algorithms using them. For calculations on matrices,
 vectors and tensors to be correct, it is necessary to ensure certain properties
 about them, including the sizes of operands. Furthermore, current implementations
-of matrices and vectors in Drasil support only fixed fixed sizes. 
+of matrices and vectors in Drasil support only fixed sizes, and tensors are not
+yet implemented at all.
 
 The problem being solved in this project will be to allow the specification of
-tensors, matrices, and vectors and document and code  generation associated with them.
+tensors, matrices, and vectors in the Drasil system and document and code generation 
+associated with them.
 
 \subsection{Inputs and Outputs}
 
@@ -87,36 +95,89 @@ code in several supported languages to compute the operations described.
 % Use abstraction so that you can avoid details.}
 
 \subsection{Stakeholders}
+This project has the following stakeholders:
+
+\begin{itemize}
+\item Dr.~Carette and Dr.~Smith: Project supervisors
+\item Researchers interested in software engineering
+\item Software engineers looking to develop safe and correct software
+\end{itemize}
 
 \subsection{Environment}
 
-\wss{Hardware and software environment}
+The software environment of this project is the Haskell language since Drasil is
+written in Haskell. Thus, it is a constraint that this project will be written
+in Haskell and will extend the existing Drasil project and software environment
+in which it is defined.
+
+There is no particular hardware environment for this project. Any hardware able to
+support compiling Haskell code is considered in-scope.
+
+% \wss{Hardware and software environment}
 
 \section{Goals}
 
+This project consists of five main goals and two stretch goals. The main goals define
+what the project must achieve to be considered a success. Stretch goals represent
+additional future goals worth working towards if time/resources allow (and whose
+considerations are worth keeping in mind as the main system is built), but which 
+are considered out of scope for the current project. The main goals are as follows:
+
+\begin{enumerate}[label={G\arabic*.}]
+    \item Expand Drasil's expression language with new primitives for generalized tensors.
+    \begin{enumerate}
+    \item[G1.1] Define smart constructors (built on top of the generalized tensors) for 
+          the simple cases of vectors and matrices.
+    \end{enumerate}
+    \item Expand Drasil's type system to cover tensors, vectors and matrices.
+    \item Enable documentation and code generation using these new primitives.
+    \item Include enough information in the types to support at least code runtime 
+          checks of sizes on tensor/vector/matrix operations.
+    \item Demonstrate the use of this system to generate documents and code for basic 
+          scientific computing tasks using vectors, matrices and/or tensors.
+    \begin{itemize}
+    \item[G5.1.] Ensure that existing Drasil examples continue to work despite these
+          new changes.
+    \end{itemize}
+\end{enumerate}
+
 \section{Stretch Goals}
+
+The following are stretch goals considered out of scope for the current project but
+are goals worth working towards in the future:
+
+\begin{enumerate}[label={SG\arabic*.}]
+\item Demonstrate the use of this system for basic image processing tasks (e.g. 
+mean/median filters).
+\item Enable type safety of operations at specification-time.
+\end{enumerate}
 
 \section{Challenge Level and Extras}
 
-\wss{State your expected challenge level (advanced, general or basic).  The
-challenge can come through the required domain knowledge, the implementation or
-something else.  Usually the greater the novelty of a project the greater its
-challenge level.  You should include your rationale for the selected level.
-Approval of the level will be part of the discussion with the instructor for
-approving the project.  The challenge level, with the approval (or request) of
-the instructor, can be modified over the course of the term.}
+The challenge level for this project is \textbf{Research}. Exact deliverables will be
+determined in conjunction with the instructor. The extra being proposed is to write
+a research paper describing the work and showing the examples. The paper is to be
+published on arXiv.org at a minimum, with hopes to publish in a journal and/or 
+conference.
 
-\wss{Teams may wish to include extras as either potential bonus grades, or to
-make up for a less advanced challenge level.  Potential extras include usability
-testing, code walkthroughs, user documentation, formal proof, GenderMag
-personas, Design Thinking, etc.  Normally the maximum number of extras will be
-two.  Approval of the extras will be part of the discussion with the instructor
-for approving the project.  The extras, with the approval (or request) of the
-instructor, can be modified over the course of the term.}
+% \wss{State your expected challenge level (advanced, general or basic).  The
+% challenge can come through the required domain knowledge, the implementation or
+% something else.  Usually the greater the novelty of a project the greater its
+% challenge level.  You should include your rationale for the selected level.
+% Approval of the level will be part of the discussion with the instructor for
+% approving the project.  The challenge level, with the approval (or request) of
+% the instructor, can be modified over the course of the term.}
+
+% \wss{Teams may wish to include extras as either potential bonus grades, or to
+% make up for a less advanced challenge level.  Potential extras include usability
+% testing, code walkthroughs, user documentation, formal proof, GenderMag
+% personas, Design Thinking, etc.  Normally the maximum number of extras will be
+% two.  Approval of the extras will be part of the discussion with the instructor
+% for approving the project.  The extras, with the approval (or request) of the
+% instructor, can be modified over the course of the term.}
 
 \newpage{}
 
-\section{References}
 \bibliographystyle{abbrvnat}
 \bibliography{Bib}
 
