@@ -226,6 +226,18 @@ This introduction section states the purpose of this document, the scope of
 the requirements, the characteristics of the intended reader, an overview of the
 Drasil project, and describes the organization of the rest of the document.
 
+\subsection{Problem}
+Currently, vectors and matrices in Drasil are implemented in a way that does not 
+promote the correctness of algorithms using them. For calculations on matrices,
+vectors and tensors to be correct, it is necessary to ensure certain properties
+about them, including the sizes of operands. Furthermore, current implementations
+of matrices and vectors in Drasil support only fixed sizes, and tensors are not
+yet implemented at all.
+
+The problem being solved in this project will be to allow the specification of
+tensors, matrices, and vectors in the Drasil system and document and code generation 
+associated with them.
+
 \subsection{Purpose of Document}
 The purpose of this document is to document the necessary mathematical background for,
 and the software requirements of, an extension of the Drasil project encoding tensor,
@@ -649,7 +661,7 @@ Stress-strain problems are problems that quantify the stress on a given object,
 for example a metal beam. The resulting tensor is a second-order tensor with components
 $\sigma_{i,j}$ that relates unit-length direction vectors $\mathbf{e}$ to the
 \textit{traction vectors} $\mathbf{T}^{(\mathbf{e})}$ across an imaginary surface
-perpendicular to $\mathbf e$\citep{Wikipedia_Cauchy_2025}:
+perpendicular to $\mathbf e$~\citep{Wikipedia_Cauchy_2025}:
 
 $$\mathbf{T}^{(\mathbf{e})} = \mathbf e \cdot \mathbf \sigma\text{ or }\mathbf{T}^{(\mathbf{e})}_j = \sigma_{i,j}e_i$$ 
 
