@@ -1,12 +1,10 @@
-# Software Requirements Specification (SRS)
+# SimpleDarkBlue Beamer Theme
 
-<The SRS is for a single product, not a family of products. A Commonality Analysis is
-more appropriate for a family of products.>
+The **SimpleDarkBlue Beamer Theme** is a simple LaTeX template designed for academic and scientific presentations.
 
-<The template in this folder is suited to Scientific Computing (also known as 
-Research Software) projects>
+-   CTAN: https://ctan.org/pkg/beamertheme-simpledarkblue
+-   Github: https://github.com/pm25/SimpleDarkBlue-BeamerTheme
 
-The folders and files for this folder are as follows:
+## License
 
-Describe ...
-
+This project is released under the **Unlicense License**, granting you complete freedom to use, modify, and distribute the template. For more details, see the [LICENSE](./LICENSE) file.

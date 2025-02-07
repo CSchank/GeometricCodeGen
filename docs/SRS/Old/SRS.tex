@@ -1,0 +1,700 @@
+% THIS DOCUMENT IS TAILORED TO REQUIREMENTS FOR SCIENTIFIC COMPUTING.  IT SHOULDN'T
+% BE USED FOR NON-SCIENTIFIC COMPUTING PROJECTS
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xr}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xfrac}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage{enumitem}
+
+\usepackage[round]{natbib}
+
+%\usepackage{refcheck}
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+      colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+\input{../Comments}
+\input{../Common}
+
+% For easy change of table widths
+\newcommand{\colZwidth}{1.0\textwidth}
+\newcommand{\colAwidth}{0.13\textwidth}
+\newcommand{\colBwidth}{0.82\textwidth}
+\newcommand{\colCwidth}{0.1\textwidth}
+\newcommand{\colDwidth}{0.05\textwidth}
+\newcommand{\colEwidth}{0.8\textwidth}
+\newcommand{\colFwidth}{0.17\textwidth}
+\newcommand{\colGwidth}{0.5\textwidth}
+\newcommand{\colHwidth}{0.28\textwidth}
+
+% Used so that cross-references have a meaningful prefix
+\newcounter{defnum} %Definition Number
+\newcommand{\dthedefnum}{GD\thedefnum}
+\newcommand{\dref}[1]{GD\ref{#1}}
+\newcounter{datadefnum} %Datadefinition Number
+\newcommand{\ddthedatadefnum}{DD\thedatadefnum}
+\newcommand{\ddref}[1]{DD\ref{#1}}
+\newcounter{theorynum} %Theory Number
+\newcommand{\tthetheorynum}{TM\thetheorynum}
+\newcommand{\tref}[1]{TM\ref{#1}}
+\newcounter{tablenum} %Table Number
+\newcommand{\tbthetablenum}{TB\thetablenum}
+\newcommand{\tbref}[1]{TB\ref{#1}}
+\newcounter{assumpnum} %Assumption Number
+\newcommand{\atheassumpnum}{A\theassumpnum}
+\newcommand{\aref}[1]{A\ref{#1}}
+\newcounter{goalnum} %Goal Number
+\newcommand{\gthegoalnum}{GS\thegoalnum}
+\newcommand{\gsref}[1]{GS\ref{#1}}
+\newcounter{instnum} %Instance Number
+\newcommand{\itheinstnum}{IM\theinstnum}
+\newcommand{\iref}[1]{IM\ref{#1}}
+\newcounter{reqnum} %Requirement Number
+\newcommand{\rthereqnum}{R\thereqnum}
+\newcommand{\rref}[1]{R\ref{#1}}
+\newcounter{nfrnum} %NFR Number
+\newcommand{\rthenfrnum}{NFR\thenfrnum}
+\newcommand{\nfrref}[1]{NFR\ref{#1}}
+\newcounter{lcnum} %Likely change number
+\newcommand{\lthelcnum}{LC\thelcnum}
+\newcommand{\lcref}[1]{LC\ref{#1}}
+
+\usepackage{fullpage}
+
+\newcommand{\deftheory}[9][Not Applicable]
+{
+\newpage
+\noindent \rule{\textwidth}{0.5mm}
+
+\paragraph{RefName: } \textbf{#2} \phantomsection 
+\label{#2}
+
+\paragraph{Label:} #3
+
+\noindent \rule{\textwidth}{0.5mm}
+
+\paragraph{Equation:}
+
+#4
+
+\paragraph{Description:}
+
+#5
+
+\paragraph{Notes:}
+
+#6
+
+\paragraph{Source:}
+
+#7
+
+\paragraph{Ref.\ By:}
+
+#8
+
+\paragraph{Preconditions for \hyperref[#2]{#2}:}
+\label{#2_precond}
+
+#9
+
+\paragraph{Derivation for \hyperref[#2]{#2}:}
+\label{#2_deriv}
+
+#1
+
+\noindent \rule{\textwidth}{0.5mm}
+
+}
+
+\begin{document}
+
+\title{Software Requirements Specification for \progname} 
+\author{\authname}
+\date{\today}
+	
+\maketitle
+
+~\newpage
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+~\newpage
+
+\section*{Revision History}
+
+\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+\midrule
+January 23rd & 1.0 & Initial Work on Document for Presentation\\
+Date 2 & 1.1 & Notes\\
+\bottomrule
+\end{tabularx}
+
+~\newpage
+
+\section{Reference Material}
+
+This section records information for easy reference.
+
+\subsection{Table of Symbols}
+
+The table that follows summarizes the symbols used in this document along with
+their units.  The choice of symbols was made to be consistent with the heat
+transfer literature and with existing documentation for solar water heating
+systems.  The symbols are listed in alphabetical order.
+
+\renewcommand{\arraystretch}{1.2}
+%\noindent \begin{tabularx}{1.0\textwidth}{l l X}
+\noindent \begin{longtable*}{l l p{12cm}} \toprule
+\textbf{symbol} & \textbf{unit} & \textbf{description}\\
+\midrule 
+$A_C$ & \si[per-mode=symbol] {\square\metre} & coil surface area
+\\
+$A_\text{in}$ & \si[per-mode=symbol] {\square\metre} & surface area over 
+which heat is transferred in
+\\ 
+\bottomrule
+\end{longtable*}
+\plt{Use your problems actual symbols.  The si package is a good idea to use for
+  units.}
+
+\subsection{Terminology}
+\begin{itemize}
+\item \textbf{Specification-time}: A property that holds true when a specification is
+     created in the Drasil framework.
+\item \textbf{Generation-time}: A property that holds true or is checked when the 
+     code/documentation is generated by the Drasil system. 
+\item \textbf{Runtime}: A property that holds true or is checked when the generated 
+     code is run.
+\end{itemize}
+
+\subsection{Abbreviations and Acronyms}
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l l} 
+  \toprule		
+  \textbf{symbol} & \textbf{description}\\
+  \midrule 
+  A & Assumption\\
+  DD & Data Definition\\
+  GD & General Definition\\
+  GS & Goal Statement\\
+  IM & Instance Model\\
+  LC & Likely Change\\
+  PS & Physical System Description\\
+  R & Requirement\\
+  SRS & Software Requirements Specification\\
+  \progname{} & \plt{put an expanded version of your program name here (as appropriate)}\\
+  TM & Theoretical Model\\
+  \bottomrule
+\end{tabular}\\
+
+\plt{Add any other abbreviations or acronyms that you add}
+
+\subsection{Mathematical Notation}
+
+
+\newpage
+
+\pagenumbering{arabic}
+
+\section{Introduction}
+This introduction section states the purpose of this document, the scope of 
+the requirements, the characteristics of the intended reader, an overview of the
+Drasil project, and describes the organization of the rest of the document.
+
+\subsection{Problem}
+Currently, vectors and matrices in Drasil are implemented in a way that does not 
+promote the correctness of algorithms using them. For calculations on matrices,
+vectors and tensors to be correct, it is necessary to ensure certain properties
+about them, including the sizes of operands. Furthermore, current implementations
+of matrices and vectors in Drasil support only fixed sizes, and tensors are not
+yet implemented at all.
+
+The problem being solved in this project will be to allow the specification of
+tensors, matrices, and vectors in the Drasil system and document and code generation 
+associated with them.
+
+\subsection{Purpose of Document}
+The purpose of this document is to document the necessary mathematical background for,
+and the software requirements of, an extension of the Drasil project encoding tensor,
+vector, and matrix operations. It is intended to allow the different stakeholders to
+communicate about and iterate on the project in a formal way. The document will likely
+be updated throughout the project, and the changes will be recorded in the Revision
+History table.
+
+\subsection{Scope of Requirements} 
+The scope of the requirements will be related to the addition of tensors, vectors,
+and matrices to the Drasil project.
+
+\subsection{Characteristics of Intended Reader}\label{sec_IntendedReader}
+TODO
+
+\subsection{Overview of Drasil Project}
+Drasil is ``a framework a framework for generating all of the software artifacts from 
+a stable knowledge base, focusing currently on scientific software''. The framework
+is written in Haskell and allows generation of Software Requirements Specifications,
+Python, Java, C-Sharp, and C++ code, README files, and Makefiles.
+
+\subsection{Organization of Document}
+The rest of the document is organized as follows: Section~\ref{Sec:RelatedWork} 
+presents related work in the area of tensors, Section~\ref{Sec:MathematicalDefinitions}
+presents the mathematical definitions, transformation rules and allowed operations
+on tensors, vectors, and matrices. Then, Section~\ref{Sec:VecMatAsTensors} describes
+how vectors and matrices can be defined as special cases of tensors. Finally, 
+Section~\ref{Sec:Req} presents general requirements for the system extension as well as
+a set of ``test-driven'' requirements, denoting some example scientific problems
+to be encoded and solved using this new system, which will provide oracles with which
+to test its correctness.
+
+
+\section{Related Work}\label{Sec:RelatedWork}
+
+\subsection{Tensors in Haskell}
+TODO: Tensor Hackage library
+
+\subsection{Tensors in Other Languages}
+TODO: Numpy, Tensorflow, etc.
+
+\section{Mathematical Definitions}\label{Sec:MathematicalDefinitions}
+This section provides mathematical definitions of tensors, vectors, and matrices. We
+begin with a definition of Einstein summation notation which will be used throughout
+the document to eliminate the need for explicit summations. Then we will turn our
+attention to vectors, matrices and generalized tensors.
+This includes terminology needed for each, the notation used to describe each one,
+the transformation rules governing each one, and the allowed operations we are 
+targeting for the software. Note that vectors and matrices will be defined here without
+relying on their definition as a tensor; Section~\ref{Sec:VecMatAsTensors} will redefine
+them using tensors.
+
+\subsection{Einstein Summation Notation}
+
+Einstein summation notation is used to describe repeated summations and multiplications
+in a compact notation. They behave according to the following four rules~\citep{Khan2023}:
+
+\medskip
+\noindent\textit{Rule 1: Any twice-repeated index in a single term is summed over.}
+
+\noindent For example, writing the term $a_{i,j}b_i$ represents the sum 
+$\sum_{i=1}^n a_{i,j}b_i$. With Einstein notation, we can omit the sum notation.
+
+\medskip
+\noindent\textit{Rule 2: A twice-repeated index is called a dummy index; a 
+once-repeated index is called a free index.}
+
+\noindent In the example above, $i$ is a dummy index \textemdash~it can be renamed
+however you would like and it still means $1\ldots n$. However, $j$ is a free index
+and has restrictions on naming.
+
+\medskip
+\noindent\textit{Rule 3: No index may occur 3 or more times in a given term.}
+
+\noindent For example, the term $a_{i,i}b_i$ is not legal.
+
+\medskip
+\noindent\textit{Rule 4: In an equation involving Einstein notation, the free indices
+on both sides must match.}
+
+\noindent Some examples of correctly-formed equations:
+
+\begin{itemize}
+\item $x_i = a_{i,j}b_i$ is valid because $i$ is free on both the LHS and RHS
+\item $a_i = A_{k,i}B_{k,j}x_j + C_{i,k}u_k$ is valid because $i$ is a free variable on
+      the LHS, and in every term it is the free variable on the RHS.
+\end{itemize}
+
+\noindent Some examples of incorrectly-formed equations:
+
+\begin{itemize}
+  \item $x_i = A_{j,i}$ is invalid because $i$ is the only free variable on the LHS, but
+      $i$ and $j$ are both free on the RHS.
+  \item $x_j = A{i,k}u_k$ is invalid because $j$ is free on the LHS, but $i$ is free on 
+      the RHS.
+  \item $x_i = A_{i,k}u_k + c_j$ is invalid because $i$ is free on the LHS, but on the 
+      RHS, one term has $i$ free while the other term has $j$ free.
+  \end{itemize}
+
+The remainder of this document will use Einstein notation to enhance brevity and clarity.
+
+\subsection{Vectors}
+A vector is a quantity having a magnitude and a direction~\cite{Wikipedia_Vectors_2024}.
+They are used in mathematics and physics problems, especially those involving 
+
+\subsubsection{Terms}
+\begin{itemize}
+\item \textbf{Component}: An individual element of a vector.
+\item \textbf{Magnitude}: The size or ``length'' of a vector.
+\item \textbf{Direction}: The way a vector points in space.
+\item \textbf{Basis Vector}: 
+\end{itemize}
+
+\subsubsection{Notation}
+We will write vectors using the boldface, such as $\mathbf{V}$. An example of a vector with 
+three elements is $\mathbf{a} = \begin{bmatrix}a_1 & a_2 & a_3 \end{bmatrix}$. This is
+called a \textit{row vector}. An example of a column vector is $\mathbf{b} = 
+\begin{bmatrix}b_1 \\ b_2 \\ b_3 \end{bmatrix}$.
+
+\subsubsection{Allowed Operations} 
+
+This subsection defines the allowed operations on vectors.
+
+\noindent \textbf{Equality}
+
+Two vectors are said to be equal if they have the same magnitude and 
+direction~\citep{Wikipedia_EuclidVectors_2025}. This can also be defined by
+equating their components, i.e. 
+
+$$\mathbf{a}_i = \mathbf{b}_i\ \forall~i = 1\ldots n$$
+
+\noindent\textbf{Vector Addition}
+
+\noindent Two vectors with the same size can be added together. Adding them adds their
+components together. That is,
+
+$$\mathbf{a} + \mathbf{b} = \mathbf{a}_i + \mathbf{b}_i$$
+
+\noindent\textbf{Scalar Multiplication}
+The scalar multiplication of a vector is equivalent to multiplying the magnitude
+by that number. Equivalently, it is the same as multiplying each component by the
+number. That is, a vector $\mathbf{a}$ scaled by the real number $r$ is denoted
+$r\mathbf{a}$ and is defined as:
+
+$$(r\mathbf{a})_i = r\mathbf{a}_i, 1 \leq i \leq n$$
+
+\noindent \textbf{Dot Product}
+
+The \textit{dot product} of two vectors each of size $n$ is represented by
+
+$$\mathbf{a} \cdot \mathbf{b} = \mathbf{a}_i\mathbf{b}_i$$.
+
+\noindent \textbf{Cross Product}
+
+The \textit{cross product} $\mathbf{c}$ of 3-dimensional vectors $\mathbf{a}$ and
+$\mathbf{b}$ is denoted as $\mathbf{c} = \mathbf{a} \times 
+\mathbf{b}$, and is defined by Einstein notation as~\citep{ContinuumMechanics2012}:
+
+$$c_i = \epsilon_{i,j,k}\mathbf{a}_j\mathbf{b}_k\text{, where }\epsilon_{1,2,3}=
+\epsilon_{2,3,1}=\epsilon_{3,1,2} = 1\text{ and }\epsilon_{3,2,1} = \epsilon_{2,1,3}
+= \epsilon_{1,3,2} = -1$$
+
+
+\subsection{Matrices}
+A \textit{matrix} is a rectangular table of numbers, symbols, or expressions
+with entries arranged in rows and columns~\citep{Wikipedia_Matrix_2025}. For
+example, the following is a 2-by-3 matrix: 
+
+$$\mathbf{A} = 
+\begin{bmatrix}
+  a_{1,1} & a_{1,2} & a_{1,3} \\
+  a_{2,1} & a_{2,2} & a_{2,3}
+ \end{bmatrix}$$
+
+\subsubsection{Terms}
+
+\begin{itemize}
+\item \textbf{Size}: The number of rows and columns in a matrix. A matrix with
+      $m$ rows and $n$ columns is called an $m \times n$ matrix, or an $m$-by-$n$ matrix.
+\item \textbf{Dimensions}: In the above example, $m$ and $n$ are called the matrix's
+      \textit{dimensions}.
+\item \textbf{Entries}: An individual element in the matrix.
+\end{itemize}
+
+\subsubsection{Notation}
+
+By convention, we refer to matrices using an uppercase boldface name and
+their components using the lowercase equivalent without using boldface. The
+symbol $\mathbf{a}_{i,j}$ represents the \textit{entry} at the $i$th row
+and $j$th column of the matrix.
+
+\subsubsection{Allowed Operations}
+The following is the list of allowed operations on matrices:
+
+\medskip
+\noindent\textbf{Equality}
+
+Like vectors, two matrices $\mathbf A$ and $\mathbf B$ of size $m \times n$ 
+are equal if and only if their entries are equal:
+
+$$\mathbf A_{i,j} = \mathbf B_{i,j},\ \forall~i = 1 \ldots m, j = 1 \ldots n$$
+
+\medskip
+\noindent\textbf{Addition}
+
+\noindent The addition of two $m \times n$ matrices is calculated as:
+
+$$(\mathbf A + \mathbf B)_{i,j} = \mathbf{A}_{i,j} + \mathbf{B}_{i,j}, 1 \leq i \leq m, 1 \leq j \leq n$$
+
+\medskip
+\noindent\textbf{Scalar Multiplication}
+\noindent The scalar multiplication of a real number $c$ and a matrix $\mathbf{A}$ 
+is denoted as $c\mathbf{A}$ and is computed as:
+
+$$(c\mathbf A)_{i,j} = c\mathbf{A}_{i,j}, 1 \leq i \leq m, 1 \leq j \leq n$$
+
+\medskip
+\noindent\textbf{Subtraction}
+
+\noindent The subtraction of two $m \times n$ matrices is denoted as $\mathbf{A} - \mathbf{B}$,
+and is the addition of the scalar multiplication by -1:
+
+$$(\mathbf A - \mathbf B)_{i,j} = \mathbf{A}_{i,j} + (-1)\mathbf{B}_{i,j}, 1 \leq i \leq m, 1 \leq j \leq n$$
+
+
+\medskip
+\noindent\textbf{Transposition}
+
+\noindent The \textit{transpose} of an $m\times n$ matrix is the $n\times m$ matrix $\mathbf{A}^T$
+formed by turning rows into columns and vice versa:
+
+$$(\mathbf A^T)_{i,j} = \mathbf A_{j,i}$$
+
+\medskip
+\noindent\textbf{Matrix Multiplication}
+
+\noindent The \textit{matrix multiplication} of matrices $\mathbf A$ and $\mathbf B$, is 
+defined when matrix $\mathbf A$ is of size $m \times p$ and matrix $\mathbf B$ is of 
+size $p \times n$. Then, the resulting matrix $\mathbf A\mathbf B$ is a matrix of size 
+$m \times n$ such that
+
+$$(\mathbf A\mathbf B)_{i,j} = a_{i,r}b_{r,j}$$
+
+
+\medskip
+\noindent\textbf{Row Operations}
+TODO
+
+\begin{enumerate}
+\item Row addition
+\item Row multiplication
+\item Row switching
+\end{enumerate}
+
+
+\medskip
+\noindent\textbf{Submatrix}
+TODO 
+
+\noindent A \textit{submatrix} is obtained by deleting any collection or rows and/or columns.
+
+
+\subsection{Tensors}
+A \textit{tensor} is an ``algebraic object that describes a multilinear
+relationship between sets of algebraic objects such as vectors, scalars
+and even other tensors''~\citep{Wikipedia_Tensors_2025}. While tensors
+are considered to be independent of any basis, they are often referred
+to by their components in a particular basis; in this case they are
+stored as a multidimensional array. We will take advantage of this 
+definition since it is a straightforward way to define and store tensors.
+
+\subsubsection{Terms}
+This subsection denotes common terminology used to describe tensors:
+
+\begin{itemize}
+\item \textbf{Index}: One dimension of the tensor.
+\item \textbf{Components}: The numbers in the multidimensional array representing a
+      tensor (see below).
+\item \textbf{Order}: The total number of indices needed to uniquely identify each of the 
+      components of a tensor.
+\item \textbf{Basis vector}: A set $B$ of vectors in a vector space $V$ such that every 
+      vector in $V$ can be written as a unique linear combination of the vectors 
+      in $B$~\citep{Wikipedia_Basis_2025}
+\item \textbf{Coordinate Transformation}: 
+\end{itemize}
+
+\subsubsection{Multidimensional Array Representation}
+A common and convenient representation of a tensor for a given basis is using a 
+multidimensional array to store the tensor. These can be thought of as higher-dimensional
+matrices. For instance, the tensor $T_{i,j}$ is
+the tensor of order two; it has two indices $i$ and $j$. This is also called a
+second-order tensor. If the indices $i$ and $j$ run from 1 to 3 (as they would for
+a three-dimensional problem), then this tensor could be represented as a two-dimensional
+array with 9 elements, e.g.:
+
+$$\begin{bmatrix}
+  \mathbf T_{1,1} & \mathbf T_{1,2} & \mathbf T_{1,3}\\
+  \mathbf T_{2,1} & \mathbf T_{2,2} & \mathbf T_{2,3}\\
+  \mathbf T_{3,1} & \mathbf T_{3,2} & \mathbf T_{3,3}
+\end{bmatrix}
+$$
+
+
+\medskip
+\noindent\textbf{Basis Vectors}
+
+Though tensors are supposed to be independent of their basis, this multidimensional
+array description has the bases ``built-in'', so a definition of a tensor this
+way is incomplete without including the basis vectors, which are usually denoted
+as $\mathbf e_j$.
+
+\noindent\textbf{Formal Definition}
+TODO: define multidimensional array representation formally.
+
+\subsubsection{Transformation Rules}
+
+\subsubsection{Allowed Operations}
+This subsection defines the allowed operations on tensors, including operations which
+do not change the shape of the tensor like addition, subtraction and scalar multiplication,
+and those that do like tensor product, contraction, and raising and lowering an index
+\citep{Wikipedia_Tensors_2025}.
+
+\medskip
+\noindent\textbf{Tensor Addition}
+
+\noindent TODO: two tensors of the same shape can be added together.
+
+\medskip
+\noindent\textbf{Scalar Multiplication}
+
+\noindent TODO: Like vectors and matrices, scalar multiplication multiplies the components 
+of the tensor
+
+\medskip
+\noindent\textbf{Tensor Subtraction}
+
+\noindent TODO: Combination of addition and scalar multiplication by -1.
+
+\medskip
+\noindent\textbf{Tensor Product}
+
+\noindent TODO: Special tensor product, generalization of matrix multiplication.
+
+\medskip
+\noindent\textbf{Contraction}
+
+\noindent TODO: Define contraction
+
+\medskip
+\noindent\textbf{Raising or lowering an index}
+
+\noindent TODO: Define raising/lowering an index
+
+
+\section{Vectors and Matrices Defined as Tensors}\label{Sec:VecMatAsTensors}
+
+\subsection{Vectors}
+A vector is a first-order tensor. It is a tensor of rank 1.
+
+\subsubsection{Tensor Definition of Vectors}
+
+\subsubsection{Allowed Operations as Tensors}
+
+\subsection{Matrices}
+A matrix is a second-order tensor. It is a tensor of rank 2.
+
+\subsubsection{Tensor Definition of Matrices}
+
+\subsubsection{Allowed Operations as Matrices}
+
+
+\section{Requirements}\label{Sec:Req}
+This section contains requirements for the system, categorized into
+\textit{general requirements} which are requirements the system must
+follow, and \textit{test-driven requirements} which are example scientific
+problems the system must be able to generate proper documentation and 
+code to solve.
+
+\subsection{General Requirements}
+
+\begin{enumerate}[label={R\arabic*.}]
+\item The system shall contain an internal representation of tensors.
+\item The system shall contain a smart constructor for vectors, represented
+      internally as rank-1 tensors.
+\item The system shall contain a smart constructor for matrices, represented
+      internally as rank-2 tensors.
+\item The system shall allow the specification of tensor, vector, and
+      matrix operations with specification-time fixed and variable sizes.
+\item The system shall support at least the vector, matrix, and tensor operations
+      defined in Section~\ref{Sec:MathematicalDefinitions} of this document.
+\item The system shall allow the generation of documentation using Einstein
+      notation for vector, matrix, and tensors.
+\item The system shall allow the generation of code to perform the operations
+      for vectors, matrices, and tensors.
+\item The system shall ensure or check the validity of operations at specification 
+      time, generation-time, or runtime, as appropriate.
+\item The addition of these new features to Drasil shall not break any existing
+      examples.
+\item The system shall support the generation of artifacts to solve the scientific
+      computing problems listed in Section~\ref{Subsec:TDR} of this document.
+\end{enumerate}
+
+\subsection{Test-Driven Requirements}\label{Subsec:TDR}
+This section describes several example uses of tensors, vectors,
+and matrices which will be used to test the system. Since these problems
+have oracles, both in the form of the required generated documentation as well as
+computationally in terms of the results of the generated code, they are considered
+to be ``test-driven'' requirements of the system. That is, the system must be
+able to generate proper artifacts that are satisfactory to these examples. 
+
+\subsubsection{Linear Operations}
+TODO: Basic transformations using transformation matrices (scaling, rotation, etc.)
+
+\subsubsection{Slope Stability Problems}
+TODO: Slope stability problems are...
+
+\subsubsection{Stress-Strain Problems}
+
+
+Stress-strain problems are problems that quantify the stress on a given object,
+for example a metal beam. The resulting tensor is a second-order tensor with components
+$\sigma_{i,j}$ that relates unit-length direction vectors $\mathbf{e}$ to the
+\textit{traction vectors} $\mathbf{T}^{(\mathbf{e})}$ across an imaginary surface
+perpendicular to $\mathbf e$~\citep{Wikipedia_Cauchy_2025}:
+
+$$\mathbf{T}^{(\mathbf{e})} = \mathbf e \cdot \mathbf \sigma\text{ or }\mathbf{T}^{(\mathbf{e})}_j = \sigma_{i,j}e_i$$ 
+
+\begin{figure}[h!]
+  \includegraphics[width=8cm]{Figs/Components_stress_tensor.svg.png}
+  \centering
+  \caption{A graphical representation of a Cauchy stress tensor~\citep{Wikipedia_Tensors_2025}.
+          For any unit vector $\mathbf{v}$, the product $\mathbf T \cdot \mathbf v$ 
+          is a vector, denoted as $\mathbf T (\mathbf v)$ that gives the force
+          per unit area along the plane perpendicular to $\mathbf v$.
+          This can be represented by a rank-2 tensor,
+          with a total of 9 components.}
+\end{figure}
+
+Thus, we can encode the tensor as a two-dimensional array:
+
+$$\begin{bmatrix}
+  \sigma_{1,1} & \sigma_{1,2} & \sigma_{1,3}\\
+  \sigma_{2,1} & \sigma_{2,2} & \sigma_{2,3}\\
+  \sigma_{3,1} & \sigma_{3,2} & \sigma_{3,3}
+\end{bmatrix}
+$$
+
+
+
+
+
+
+
+
+\newpage
+
+\bibliographystyle {plainnat}
+\bibliography {../../refs/References}
+
+\end{document}
