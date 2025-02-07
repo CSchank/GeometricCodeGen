@@ -13,15 +13,15 @@
 %    TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title{SimpleDarkBlue Beamer Theme}
-\subtitle{Subtitle}
+\title{Drasil Geometric Algebra Extension}
+\subtitle{Overview of Requirements}
 
-\author{Pin-Yen Huang}
+\author{Christopher Schankula}
 
 \institute
 {
-    Department of Computer Science and Information Engineering \\
-    National Taiwan University % Your institution for the title page
+    Department of Computing \& Software \\
+    McMaster University % Your institution for the title page
 }
 \date{\today} % Date, can be changed to a custom date
 
@@ -39,19 +39,80 @@
 \begin{frame}{Overview}
     % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
     \tableofcontents
+
+    The purpose of this slide deck is to define the objects and operations that will
+    be implemented in the project. We will begin with a discussion about vectors and
+    matrices, then generalize with geometric algebra. Finally, we will redefine the
+    operations using geometric algebra.
 \end{frame}
 
 %------------------------------------------------
-\section{First Section}
+\section{Einstein Summation Notation}
 %------------------------------------------------
 
-\begin{frame}{Bullet Points}
+\begin{frame}{Einstein Summation Notation}
     \begin{itemize}
-        \item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        \item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-        \item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-        \item Nam cursus est eget velit posuere pellentesque
-        \item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+      \item Used to describe repeated summations and multiplications in a compact notation.
+      \item They behave according to \textbf{four rules}~\cite{Khan2023}.
+            \begin{enumerate}
+            \item Any twice-repeated index in a single term is summed over.
+            \item A twice-repeated index is called a dummy index; a once-repeated 
+                  index is called a free index.
+            \item No index may occur 3 or more times in a given term.
+            \item In an equation with Einstein notation, the free indices on both sides must
+                  match.
+            \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Einstein Summation Notation Rules}
+      Here are the rules with some more explanations~\cite{Khan2023}:
+      \begin{enumerate}
+      \item<only@1> \textit{Any twice-repeated index in a single term is summed over.}\\
+            For example, $a_{ij}b_i$ represents the term $\sum_{i=1}^j a_{ij}b_i$.
+      \item<only@1> \textit{A twice-repeated index is called a dummy index; a once-repeated 
+            index is called a free index.}\\
+            In the example above, $i$ is a dummy index \textemdash~ it can be renamed
+            however you would like. However, $j$ is a free index and has restrictions on naming.
+      \item<only@1> \textit{No index may occur 3 or more times in a given term.}\\
+            For example, $a_{ii}b_i$ is not legal.
+      \item<only@2>{\textit{In an equation with Einstein notation, the free indices on both sides must
+            match.}\\
+
+            \noindent Some examples of correctly-formed equations:
+
+            \begin{itemize}
+            \item $x_i = a_{i,j}b_i$ is valid because $i$ is free on both the LHS and RHS
+            \item $a_i = A_{k,i}B_{k,j}x_j + C_{i,k}u_k$ is valid because $i$ is a free variable on
+                  the LHS, and in every term it is the free variable on the RHS.
+            \end{itemize}
+
+            \noindent Some examples of incorrectly-formed equations:
+
+            \begin{itemize}
+            \item $x_i = A_{j,i}$ is invalid because $i$ is the only free variable on the LHS, but
+                  $i$ and $j$ are both free on the RHS.
+            \item $x_j = A{i,k}u_k$ is invalid because $j$ is free on the LHS, but $i$ is free on 
+                  the RHS.
+            \item $x_i = A_{i,k}u_k + c_j$ is invalid because $i$ is free on the LHS, but on the 
+                  RHS, one term has $i$ free while the other term has $j$ free.
+            \end{itemize}}
+
+      \end{enumerate}
+      We will use this convention from now on.
+  \end{frame}
+
+%------------------------------------------------
+
+
+
+%------------------------------------------------
+\section{Vectors}
+%------------------------------------------------
+
+\begin{frame}{Vectors}
+    \begin{itemize}
+      \item 
     \end{itemize}
 \end{frame}
 
@@ -93,7 +154,7 @@
 \end{frame}
 
 %------------------------------------------------
-\section{Second Section}
+\section{Matrices}
 %------------------------------------------------
 
 \begin{frame}{Table}
@@ -129,6 +190,11 @@
 \end{frame}
 
 %------------------------------------------------
+\section{Geometric Algebra}
+%------------------------------------------------
+
+
+%------------------------------------------------
 
 \begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
     \frametitle{Citation}
@@ -139,9 +205,13 @@
 
 %------------------------------------------------
 
+%------------------------------------------------
+\section{Geometric Algebraic Definition of Vectors and Matrices}
+%------------------------------------------------
+
 \begin{frame}{References}
     \footnotesize
-    \bibliography{reference.bib}
+    \bibliography {../../refs/References}
     \bibliographystyle{apalike}
 \end{frame}
 
