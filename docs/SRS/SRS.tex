@@ -3,11 +3,22 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\setbeamertemplate{caption}[numbered]
 \usetheme{SimpleDarkBlue}
 
 \usepackage{hyperref}
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{cmbright}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage[round]{natbib}
+
+\fontencoding{OT1}\fontfamily{cmbr}\selectfont %to load ot1cmbr.fd
+\DeclareFontShape{OT1}{cmbr}{bx}{n}{% change bx definition
+<->cmbrbx10%
+}{}
+\normalfont % back to normalfont
 
 %----------------------------------------------------------------------------------------
 %    TITLE PAGE
@@ -42,8 +53,19 @@
 
     The purpose of this slide deck is to define the objects and operations that will
     be implemented in the project. We will begin with a discussion about vectors and
-    matrices, then generalize with geometric algebra. Finally, we will redefine the
-    operations using geometric algebra.
+    matrices, then generalize with geometric algebra. Next, we will redefine the
+    operations using geometric algebra. Finally, we will finish with a discussion of
+    some high-level requirements for the project.
+\end{frame}
+
+\begin{frame}{Revision History}
+      \begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
+            \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+            \midrule
+            January 23rd, 2025 & 1.0 & First draft of document version for presentation\\
+            February 7th, 2025 & 1.1 & First draft of slide version of document\\
+            \bottomrule
+      \end{tabularx}
 \end{frame}
 
 %------------------------------------------------
@@ -99,7 +121,9 @@
             \end{itemize}}
 
       \end{enumerate}
-      We will use this convention from now on.
+      We will use this convention from now on. Note that this convention also allows us
+      to drop any mention of ``$\forall i . 1 \leq i \leq n$'' since this is implied, so
+      we will not write these to keep things clean.
   \end{frame}
 
 %------------------------------------------------
@@ -111,83 +135,330 @@
 %------------------------------------------------
 
 \begin{frame}{Vectors}
-    \begin{itemize}
-      \item 
-    \end{itemize}
+      \begin{itemize}
+      \item A vector is a quantity having a magnitude and a direction~\cite{Wikipedia_Vectors_2024} (geometric interpretation).
+      \item Used in mathematics and physics problems
+      \item Vectors support two main operations: vector addition and scalar multiplication
+      \item Notation
+            \begin{itemize}
+                  \item As a convention, we will denote vectors with lowercase boldface
+                        font, such as $\mathbf{v}$.
+                  \item The type of a vector can be written as $\mathbb{R}^n$, meaning
+                        a vector of real numbers, with length $n$
+            \end{itemize}
+      \end{itemize}
+\end{frame}
+
+\begin{frame}{Vector Operations}
+      \only<1>{\noindent\textbf{Vector Addition}
+
+      \noindent Two vectors with the same size can be added together. Adding them adds their
+      components together. That is,
+      
+      $$\mathbf{a} + \mathbf{b} = \mathbf{a}_i + \mathbf{b}_i$$
+      
+      \noindent\textbf{Scalar Multiplication}
+
+      The scalar multiplication of a vector is equivalent to multiplying the magnitude
+      by that number. Equivalently, it is the same as multiplying each component by the
+      number. That is, a vector $\mathbf{a}$ scaled by the real number $r$ is denoted
+      $r\mathbf{a}$ and is defined as:
+      
+      $$(r\mathbf{a})_i = r\mathbf{a}_i$$
+      
+      \noindent\textbf{Vector Subtraction}
+
+      Vector subtraction can be defined in terms of addition and scalar multiplication:
+      
+      $$\mathbf{a} - \mathbf{b} = \mathbf{a}_i + (-1)\mathbf{b}_i$$}
+      
+      \only<2>{\noindent \textbf{Dot Product}
+      
+      The \textit{dot product} of two vectors each of size $n$ is represented by
+      $$\mathbf{a} \cdot \mathbf{b} = \mathbf{a}_i\mathbf{b}_i$$.
+      Some notes:
+      \begin{itemize}
+            \item $a \cdot a = \|a\|^2$, where $\|a\|$ is the length of $a$
+            \item $a \cdot b = 0$ if $a$ and $b$ are perpendicular
+      \end{itemize}
+      
+      Notice that it takes two vectors and outputs a real number.
+
+      \noindent \textbf{Cross Product}
+      
+      The \textit{cross product} $\mathbf{c}$ of 3-dimensional vectors $\mathbf{a}$ and
+      $\mathbf{b}$ is denoted as $\mathbf{c} = \mathbf{a} \times 
+      \mathbf{b}$, and is defined by Einstein notation as~\cite{ContinuumMechanics2012}:
+      
+      $$\mathbf{c}_i = \epsilon_{i,j,k}\mathbf{a}_j\mathbf{b}_k\text{, where }\epsilon_{1,2,3}=
+      \epsilon_{2,3,1}=\epsilon_{3,1,2} = 1\text{ and }\epsilon_{3,2,1} = \epsilon_{2,1,3}
+      = \epsilon_{1,3,2} = -1$$}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Blocks of Highlighted Text}
-    In this slide, some important text will be \alert{highlighted} because it's important. Please, don't abuse it.
 
-    \begin{block}{Block}
-        Sample text
-    \end{block}
-
-    \begin{alertblock}{Alertblock}
-        Sample text in red box
-    \end{alertblock}
-
-    \begin{examples}
-        Sample text in green box. The title of the block is ``Examples".
-    \end{examples}
+\begin{frame}{Sidenote: Linear Transformations}
+      \begin{itemize}
+            \item Let $T : \mathbb{R}^m \to \mathbb{R}^n$ be a function on vectors.
+            \item $T$ is said to be a linear transformation if, for all scalars $k$ and $p$
+                  and vectors $\mathbf{a}$ and $\mathbf{b}$, the following linearity
+                  property holds:
+                  $$T(k\mathbf{a} + p\mathbf{b}) = kT(\mathbf{a}) + pT(\mathbf{b})$$
+                  In other words, if we scale the input vectors and add them together before
+                  passing the result into the function, the result is the same as
+                  scaling and adding after passing the vectors into the function~\cite{kuttler_first_2008}.
+      \end{itemize}
 \end{frame}
-
 %------------------------------------------------
 
-\begin{frame}{Multiple Columns}
-    \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
-        \column{.45\textwidth} % Left column and width
-        \textbf{Heading}
-        \begin{enumerate}
-            \item Statement
-            \item Explanation
-            \item Example
-        \end{enumerate}
-
-        \column{.45\textwidth} % Right column and width
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-    \end{columns}
+\begin{frame}{Basis Vectors}
+      \begin{itemize}
+            \item \textbf{Basis vector}: A set $B$ of vectors in a vector space $V$ such that every 
+            vector in $V$ can be written as a unique linear combination of the vectors 
+            in $B$~\cite{Wikipedia_Basis_2025}.
+            \item A basis must be:
+            \begin{itemize}
+                  \item Linearly independent: for every finite subset $\{\mathbf{v}_1,\ldots,\mathbf{v}_n\}$
+                        of $B$, if $c_1\mathbf{v}_1+\ldots c_n\mathbf{v}_n = \mathbf{0}$ then
+                        $c_1=\ldots= c_n = 0$. In other words, no basis vector should be able to
+                        be written as a linear combination of other basis vectors.
+                  \item A spanning set: for every vector $\mathbf{v}$ in $V$, one can
+                        write $\mathbf{v}$ as $\mathbf{v} = a_1\mathbf{v}_1+\ldots+a_n\mathbf{v}_n$.
+                        In other words, the basis must be able to construct all vectors in the set.
+                  \item For a given vector space $V$, every basis set $B$ will be of the same size.
+                        This is called the \textit{dimension} of the vector space.
+            \end{itemize}
+      \end{itemize}
 \end{frame}
+
+% %------------------------------------------------
+
+% \begin{frame}{Blocks of Highlighted Text}
+%     In this slide, some important text will be \alert{highlighted} because it's important. Please, don't abuse it.
+
+%     \begin{block}{Block}
+%         Sample text
+%     \end{block}
+
+%     \begin{alertblock}{Alertblock}
+%         Sample text in red box
+%     \end{alertblock}
+
+%     \begin{examples}
+%         Sample text in green box. The title of the block is ``Examples".
+%     \end{examples}
+% \end{frame}
+
+% %------------------------------------------------
+
+% \begin{frame}{Multiple Columns}
+%     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+%         \column{.45\textwidth} % Left column and width
+%         \textbf{Heading}
+%         \begin{enumerate}
+%             \item Statement
+%             \item Explanation
+%             \item Example
+%         \end{enumerate}
+
+%         \column{.45\textwidth} % Right column and width
+%         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+
+%     \end{columns}
+% \end{frame}
 
 %------------------------------------------------
 \section{Matrices}
 %------------------------------------------------
 
-\begin{frame}{Table}
-    \begin{table}
-        \begin{tabular}{l l l}
-            \toprule
-            \textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2} \\
-            \midrule
-            Treatment 1         & 0.0003262           & 0.562               \\
-            Treatment 2         & 0.0015681           & 0.910               \\
-            Treatment 3         & 0.0009271           & 0.296               \\
-            \bottomrule
-        \end{tabular}
-        \caption{Table caption}
-    \end{table}
+\begin{frame}{Matrices}
+
+\begin{itemize}
+      \item A \textit{matrix} is a rectangular table of numbers, symbols, or expressions
+      with entries arranged in rows and columns~\cite{Wikipedia_Matrix_2025}. For
+      example, the following is a 2-by-3 matrix: 
+      
+      $$\mathbf{A} = 
+      \begin{bmatrix}
+        a_{1,1} & a_{1,2} & a_{1,3} \\
+        a_{2,1} & a_{2,2} & a_{2,3}
+      \end{bmatrix}$$
+      \item Matrices are also widely used in mathematics and physics.
+      \item Notation
+            \begin{itemize}
+                  \item By convention, we will denote matrices as boldface
+                        uppercase letters, e.g. $\mathbf{A}$
+                  \item Sometimes, you will see the notation $\mathbb{R}^{m\times n}$
+                        representing an $m \times n$ matrix of real numbers.
+            \end{itemize}
+\end{itemize}
+
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Theorem}
-    \begin{theorem}[Mass--energy equivalence]
-        $E = mc^2$
-    \end{theorem}
+\begin{frame}{Matrix Operations}
+
+\only<1>{\noindent\textbf{Addition}
+
+\noindent The addition of two $m \times n$ matrices is calculated as:
+
+$$(\mathbf A + \mathbf B)_{i,j} = \mathbf{A}_{i,j} + \mathbf{B}_{i,j}$$
+
+\medskip
+\noindent\textbf{Scalar Multiplication}
+\noindent The scalar multiplication of a real number $c$ and a matrix $\mathbf{A}$ 
+is denoted as $c\mathbf{A}$ and is computed as:
+
+$$(c\mathbf A)_{i,j} = c\mathbf{A}_{i,j}$$
+
+\medskip
+\noindent\textbf{Subtraction}
+
+\noindent The subtraction of two $m \times n$ matrices is denoted as $\mathbf{A} - \mathbf{B}$,
+and is the addition of the scalar multiplication by -1:
+
+$$(\mathbf A - \mathbf B)_{i,j} = \mathbf{A}_{i,j} + (-1)\mathbf{B}_{i,j}$$}
+
+
+\only<2>{\medskip
+\noindent\textbf{Transposition}
+
+\noindent The \textit{transpose} of an $m\times n$ matrix is the $n\times m$ matrix $\mathbf{A}^T$
+formed by turning rows into columns and vice versa:
+
+$$(\mathbf A^T)_{i,j} = \mathbf A_{j,i}$$
+
+\medskip
+\noindent\textbf{Matrix Multiplication}
+
+\noindent The \textit{matrix multiplication} of matrices $\mathbf A$ and $\mathbf B$, is 
+defined when matrix $\mathbf A$ is of size $m \times p$ and matrix $\mathbf B$ is of 
+size $p \times n$. Then, the resulting matrix $\mathbf A\mathbf B$ is a matrix of size 
+$m \times n$, such that
+
+$$(\mathbf A\mathbf B)_{i,j} = a_{i,r}b_{r,j}$$}
+
 \end{frame}
 
 %------------------------------------------------
+\begin{frame}{Matrix Row Operations}
 
-\begin{frame}{Figure}
-    Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-    %\begin{figure}
-    %\includegraphics[width=0.8\linewidth]{test}
-    %\end{figure}
+There are three kinds of row operations:
+
+\begin{enumerate}
+      \item<1-2> Row addition: adding one row to another
+            \only<2>{This can be done by using a multiplying by a matrix that looks like
+            an identity matrix, but with a non-zero entry in one of the non-diagonal
+            spaces:
+            $$\mathbf{A} = 
+            \begin{bmatrix}
+                  1 & 0 \\
+                  2 & 1
+                \end{bmatrix} 
+            \begin{bmatrix}
+              a & b \\
+              c & b
+            \end{bmatrix}
+            = 
+            \begin{bmatrix}
+                  a & b \\
+                  c + 2a & d + 2b
+                \end{bmatrix} 
+            $$
+            }
+      \item<1,3> Row multiplication: multiplying all entries in a row by a non-zero constant
+            \only<3>{This can be done by an identity matrix with a non-one in the diagonal:
+            $$\mathbf{A} = 
+            \begin{bmatrix}
+                  2 & 0 \\
+                  0 & 1
+                \end{bmatrix} 
+            \begin{bmatrix}
+              a & b \\
+              c & b
+            \end{bmatrix}
+            = 
+            \begin{bmatrix}
+                  2a & 2b \\
+                  c & d
+                \end{bmatrix} 
+            $$
+            }
+      \item<1,4> Row switching: interchanging two rows of a matrix
+            \only<4>{This can be done by swapping the positions of the ones in the
+            identity matrix:
+            $$\mathbf{A} = 
+            \begin{bmatrix}
+                  0 & 1 \\
+                  1 & 0
+                \end{bmatrix} 
+            \begin{bmatrix}
+              a & b \\
+              c & b
+            \end{bmatrix}
+            = 
+            \begin{bmatrix}
+                  d & c \\
+                  a & b
+                \end{bmatrix} 
+            $$
+            }
+\end{enumerate}
+
 \end{frame}
+
+%------------------------------------------------
+\begin{frame}{Submatrix}
+
+Taking a submatrix involves taking only a portion of the rows and/or columns in
+the matrix. To delete the rows or columns you want, you multiply by the identity
+matrix with that row or column deleted.
+For example, to extract the bottom-right $2 \times 2$ matrix, we must
+first select the rows, then the columns that we want~\cite{mathse1322946}:
+$$\mathbf{A} = 
+\begin{bmatrix}
+      0 & 1 & 0 \\
+      0 & 0 & 1
+\end{bmatrix} 
+\begin{bmatrix}
+  a & b & c \\
+  d & e & f \\
+  g & h & i
+\end{bmatrix}
+\begin{bmatrix}
+      0 & 0 \\
+      1 & 0 \\
+      0 & 1 \\
+\end{bmatrix} 
+= 
+\begin{bmatrix}
+      e & f \\
+      h & i
+    \end{bmatrix} 
+$$
+
+\end{frame}
+
+% %------------------------------------------------
+
+% \begin{frame}{Theorem}
+%     \begin{theorem}[Mass--energy equivalence]
+%         $E = mc^2$
+%     \end{theorem}
+% \end{frame}
+
+% %------------------------------------------------
+
+% \begin{frame}{Figure}
+%     Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
+%     %\begin{figure}
+%     %\includegraphics[width=0.8\linewidth]{test}
+%     %\end{figure}
+% \end{frame}
 
 %------------------------------------------------
 \section{Geometric Algebra}
@@ -196,23 +467,539 @@
 
 %------------------------------------------------
 
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-    \frametitle{Citation}
-    An example of the \verb|\cite| command to cite within the presentation:\\~
+\begin{frame}{Geometric Algebra}
+\begin{itemize}
+      \item \textit{Geometric algebra}, also known as \textit{Clifford algebra},
+            is an abstraction of vectors and matrices.
+      \item It allows us to think about more abstract objects, beyond just
+            scalars and vectors, which are called \textit{bivectors}, 
+            \textit{trivectors}, etc.
+      \item Clifford Algebra defines many rules and operations, many of which have
+            geometric interpretations.
+      \item We will first define these, then continue to redefine vector and matrix
+            operations using them.
+      \item Notation
+            \begin{itemize}
+                  \item We will use $s$ to represent scalars, $V$ to represent vectors,
+                        and $B$ to represent bivectors.
+                  \item $A$, $B$, and $C$ will be used to represent any geometric algebra 
+                        object (also known as clifs)
+            \end{itemize}
+      \item Unless otherwise indicated, this content comes from~\cite{henle2025clifford}.
+            It is a great resource if you'd like to learn more.
+\end{itemize}
 
-    This statement requires citation \cite{p1}.
 \end{frame}
 
 %------------------------------------------------
+
+
+
+%------------------------------------------------
+
+\begin{frame}{Visalizing Scalars, Vectors, Bivectors, $\ldots$}
+\begin{itemize}
+\item Most people know about how to visualize scalars (a point in space) and
+      vectors (an arrow in space), but how do we visualize higher-dimensional objects?
+\item The visualization is shown in Figure~\ref{Fig:ObjViz}
+\item A bivector is a patch of flat surface
+\item A trivector is a piece of three-dimensional space, with a volume and orientation.
+\end{itemize}
+
+\begin{figure}
+      \includegraphics[width=0.7\textwidth]{Figs/blades.png}
+      \caption{Visualization of geometric algebraic objects}\label{Fig:ObjViz}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}{Grades}
+\begin{itemize}
+\item Each of these (scalar, vector, bivector, $\ldots$) has a \textit{grade}, which
+      corresponds to the number of dimensions involved. We have summarized these
+      in Table~\ref{Tab:Grades}.
+\item We call these objects (regardless of their grade) \textit{clifs}.
+\end{itemize}
+
+\begin{table}
+\caption{Grades of Geometric Objects}\label{Tab:Grades}
+\begin{tabularx}{\textwidth}{p{2cm}p{3cm}p{5cm}l}
+      \toprule {\bf Object} & {\bf Visualized as} & {\bf Geometric Extent} & \bf Grade\\
+      \midrule
+      Scalar & Point & No geometric extent & 0 \\
+      Vector & Line segment & Extent in 1 direction & 1 \\
+      Bivector & Patch of surface & Extent in 2 directions & 2 \\
+      Trivector & Piece of shape & Extent in 3 directions & 3 \\
+      Etc. & & &\\
+      \bottomrule
+\end{tabularx}
+\end{table}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Visualization of Scaling Objects}
+\begin{itemize}
+\item For every vector $\mathbf v$, you can visualize $2\mathbf v$ as being twice as
+      much length. 
+\item For a bivector $B$, $2B$ has twice as much area. 
+\item For scalars? Twice as much ``heat''? Or other quantity.
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Basic Arithmetic Properties}
+\begin{itemize}
+\item Scalars are familiar real numbers. 
+      \begin{itemize}
+            \item The obey the laws of: addition, subtraction, multiplication, etc.
+            \item Addition is associative and commutative.
+            \item Multiplication of scalars is associative and commutative, and distributes over
+                  addition.
+      \end{itemize}
+\item Vectors
+      \begin{itemize}
+            \item can be added to each other.
+            \item can c be multiplied by scalars in the usual way.
+            \item follow associativity and commutativity laws for addition.
+            \item follow distributivity laws in multiplication (will be introduced a bit later)
+      \end{itemize}
+\end{itemize}
+
+\end{frame}
+      
+%------------------------------------------------
+
+
+
+\begin{frame}{Addition of Clifs}
+\begin{itemize}
+\item Unique property: \textit{any} clif, regardless of grade, can be added together.
+      This includes adding scalars to vectors, vectors to bivectors, etc. For instance,
+      if $s$ is a scalar, $V$ is a vector and $B$ is a bivector, we can have
+      $$C = s + V + B$$
+\item Note: addition is allowed (e.g. $s + V$), comparison is not (e.g. $s < V$).
+\end{itemize}
+
+\end{frame}
+      
+%------------------------------------------------
+
+
+
+\begin{frame}{Addition Visually}
+
+Bivectors are added edge-to-edge, analogously to vectors' tip-to-tail placement.
+
+
+\begin{figure}[h]
+      \centering
+      \begin{subfigure}{0.4\textwidth}
+            \centering
+            \includegraphics[width=0.5\textwidth]{Figs/add-vectors.png}
+            \caption{Addition of vectors}
+            \label{fig:first}
+      \end{subfigure}
+      \begin{subfigure}{0.4\textwidth}
+            \centering
+            \includegraphics[width=0.5\textwidth]{Figs/add-bivectors.png}
+            \caption{Addition of bivectors.}
+            \label{fig:first}
+      \end{subfigure}
+      \caption{Addition of vectors and bivectors.}
+      \label{fig:main}
+  \end{figure}
+\end{frame}
+      
+%------------------------------------------------
+
+\begin{frame}{Grade Selection}
+
+\begin{itemize}
+      \item Since clifs can be additions of objects of many different grades,
+            it is nice to have a way to extract only the component you would like.
+      \item Thus, we define the following notation: $\langle C \rangle_N$ is the
+            grade-N piece of $C$.
+      \item For example, $\langle C \rangle_0$ extracts the scalar part of $C$.
+      \item Similar to the $\mathcal{R}()$ and $\mathcal{I}()$ operators in complex numbers,
+            but the types are unchanged. In complex numbers, the $\mathcal{I}()$ operator
+            returns the complex part as a real number. In geometric algebra, the
+            grade selection maintains the grade of what's being selected.
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+\begin{frame}{Multiplication: General Properties}
+
+\begin{itemize}
+      \item We write multiplication of two clifs $A$ and $B$ by juxtaposition $AB$.
+      \item The geometric product $AB$ follows the laws of:
+            \begin{itemize}
+                  \item associativity: $(AB)C = A(BC)$
+                  \item distributivity: $A(B+C) = AB + AC$
+            \end{itemize}
+            for all clifs $A$, $B$, and $C$.
+      \item Not commutative in general, but the special case of scalar multiplication is.
+      \item Multiplying vectors by scalars works as before, and is commutative: $sV = Vs$.
+      \item In fact, multiplying any clif by a scalar follows similarly and is also
+            commutative. That is, $sC = Cs$ for any scalar $s$ and clif $C$.
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+\begin{frame}{Multiplication: Vectors by Vectors}
+
+\begin{itemize}
+      \item Given two vectors, $P$ and $Q$, we know that the geometric product $PQ$
+            exists.
+      \item On vectors, we can define two new operations:
+            \begin{itemize}
+                  \item $P\cdot Q = \frac{PQ + QP}{2}$, where $P$ and $Q$ have grade = 1. \medskip
+                  \item $P \land Q = \frac{PQ - QP}{2}$, where $P$ and $Q$ have grade $\leq$ 1.
+            \end{itemize}
+      \item We call the first one the \textit{dot product}, and the second one the 
+            \textit{wedge product}.
+      \item Rearranging, we get:
+            $$PQ = P\cdot Q + P\land Q$$ where $P$ and $Q$ have grade = 1.
+            \begin{itemize}
+                  \item Note: It's important to note that this only works for vectors. 
+                        It is not the general definition of the geometric product.
+                        We will define that later.
+            \end{itemize}
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
+
+\begin{frame}{Properties of Dot Product}
+
+\begin{itemize}
+      \item The dot product produces a scalar.
+      \item Rotation by 180 degrees does not change the dot product, since 
+            $P\cdot P = (-P) \cdot (-P)$. Rotation in perpendicular to $P$
+            also does not change the dot product.
+      \item Parallel vectors: if $P$ and $Q$ are parallel, symbolized $P \| Q$,
+            then $$PQ = QP = P \cdot Q$$.
+      \item Perpendicular vectors: If $P\cdot Q = 0$ then the vectors $P$ and $Q$ are
+            perpendicular or \textit{orthogonal}, symbolized $P \bot Q$, and 
+            $$PQ = -QP = P \land Q$$
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
+
+\begin{frame}{Properties of Wedge Product}
+
+
+\begin{itemize}
+      \item The wedge product is invariant to rotations of 180 degrees in the PQ
+            plane.
+      \item If we rotate 180 degrees in a plane perpendicular to the plane, that will
+            flip the sign of the wedge product (analogous to the cross product).
+      \item The idea of wedge generalized to more than two vectors:
+            $$P\land Q\land R = \frac{1}{6}(PQR+QRP+RPQ-RQP-QPR-PRQ)$$
+      \item Even more generally,
+            $$q_1\land q_2\land q_3\cdots\land q_r = \frac{1}{r}\sum_\pi \text{sign}(\pi)
+                  q_{\pi(1)}q_{\pi(2)}q_{\pi(3)}\cdots q_{\pi(r)}$$
+            where the sum runs over all permutations $\pi$ and $\text{sign}(\pi)$ is defined as +1 for even permutations and -1 for odd ones.
+            \begin{itemize}
+                  \item This will be an object of grade $r$ if all vectors are linearly
+                        independent, otherwise it will be 0.
+            \end{itemize}
+
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
+\begin{frame}{Some Terminology}
+
+
+\begin{itemize}
+      \item A \textit{blade} is any scalar, vector, or the wedge product of any number of
+            vectors.
+      \item Any clif that has a definite grade (consists of one single grade)
+            is called \textit{homogeneous}. It is either a blade or a sum of blades,
+            all of the same grade.
+      \item Example: $s + V$ (where $s$ is a scalar and $V$ is a vector) is not homogenous. 
+            Does not have a definite grade, and is not a blade.
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
+\begin{frame}{Other Wedge Products}
+
+
+\begin{itemize}
+      \item We can define the wedge product between a blade and another blade. By unpacking
+            the wedge product, and getting rid of parentheses, we get:
+            $$P \land (Q \land R) = P\land Q\land R$$
+            $$(P \land Q) \land R = P\land Q\land R$$
+      \item Then, the wedge product contains only the top-grade terms from a geometric
+            product:
+            If $P = \langle P \rangle_p$ and $Q = \langle Q \rangle_q$, then $P \land Q = \langle PQ \rangle_{p+q}$.
+      \item Finally, we need the fact that the wedge product distributes over addition:
+            $$V \land (A + B) = V \land A + V \land B$$
+      \item Now we have generalized the wedge product to clif wedge clif.
+
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
+\begin{frame}{Other Dot Products}
+
+
+\begin{itemize}
+      \item Analogously, the dot product of two blades is the lowest-grade part: 
+            If $P = \langle P \rangle_p$ and $Q = \langle Q \rangle_q$, then $P \land Q = \langle PQ \rangle_{p-q}$.
+      \item Symmetry does not hold in general.
+      \item As before, given this definition, we can expand to all clifs knowing that
+            $$V \cdot (A+B) = V\cdot A + V \cdot B$$
+
+
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
+
+\begin{frame}{Geometric Product}
+
+
+\begin{itemize}
+      \item<only@1> At last, we can define the geometric product in general!
+      \item<only@1> To compute it we must:
+            \begin{enumerate}
+                  \item Pick a basis
+                  \item Project the factors onto that basis
+                  \item Multiply everything term-by-term
+                  \item Then simplify
+            \end{enumerate}
+      \item<only@1> Example: $A = \gamma_1 + 2\gamma_1\gamma_2$ and $B = 3\gamma_3 +5\gamma_1\gamma_2\gamma_3$.
+            Table~\ref{Tab:Product1} shows the terms.
+\only<1>{
+\begin{table}
+\caption{Term-by-Term Multiplication}\label{Tab:Product1}
+\begin{tabularx}{0.6\textwidth}{XXX}
+       & $\gamma_1$ & $2\gamma_1\gamma_2$\\
+      \midrule
+      $3\gamma_3$ & $3\gamma_3\gamma_1$ & $6\gamma_3\gamma_1\gamma_2$ \\
+      $5\gamma_1\gamma_2\gamma_3$ & $5\gamma_1\gamma_2\gamma_3\gamma_1$ & $10\gamma_1\gamma_2\gamma_3\gamma_3\gamma_1$ \\
+      \bottomrule
+\end{tabularx}
+\end{table}}
+\setcounter{table}{2}
+      \item<2> Next, we permute the orthonormal vectors, multiplying by -1 each time we do.
+\only<2>{
+\begin{table}
+\caption{Permuting the Basis Vectors}\label{Tab:Product2}
+\begin{tabularx}{0.6\textwidth}{XXX}
+       & $\gamma_1$ & $2\gamma_1\gamma_2$\\
+      \midrule
+      $3\gamma_3$ & $3\gamma_3\gamma_1$ & $6\gamma_1\gamma_2\gamma_3$ \\
+      $5\gamma_1\gamma_2\gamma_3$ & $5\gamma_1\gamma_1\gamma_2\gamma_3$ & $-10\gamma_1\gamma_1\gamma_2\gamma_2\gamma_3$ \\
+      \bottomrule
+\end{tabularx}
+\end{table}}
+
+
+
+      \item<2> Finally, we simplify, removing any vectors that are the same, since
+            a multiplication of orthonormal vectors $\gamma_i\gamma_i = 1$
+\only<2>{
+\begin{table}
+\caption{Simplifying using Orthonormal Vector Properties}\label{Tab:Product3}
+\begin{tabularx}{0.6\textwidth}{XXX}
+       & $\gamma_1$ & $2\gamma_1\gamma_2$\\
+      \midrule
+      $3\gamma_3$ & $3\gamma_3\gamma_1$ & $6\gamma_1\gamma_2\gamma_3$ \\
+      $5\gamma_1\gamma_2\gamma_3$ & $5\gamma_1\gamma_1\gamma_2\gamma_3$ & $-10\gamma_1\gamma_1\gamma_2\gamma_2\gamma_3$ \\
+      \bottomrule
+\end{tabularx}
+\end{table}}
+      \item<2> The final result is $3\gamma_3\gamma_1 + 6\gamma_1\gamma_2\gamma_3 + 5\gamma_1\gamma_1\gamma_2\gamma_3 + -10\gamma_1\gamma_1\gamma_2\gamma_2\gamma_3$.
+
+\end{itemize}
+\end{frame}
+      
+%------------------------------------------------
+
+
 
 %------------------------------------------------
 \section{Geometric Algebraic Definition of Vectors and Matrices}
 %------------------------------------------------
 
+\begin{frame}{Geometric Algebraic Definition of Vectors and Matrices}
+    \begin{itemize}
+      \item Next, we will define the vector and matrix operations using geometric
+            algebra.
+      \item The vector operations we defined earlier can be implemented in geometric 
+            algebra using grade-1 objects (vectors). The operations follow closely.
+      \item Matrix operations depend mostly on the notion of a matrix multiplication.
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Vector Operations in Geometric Algebra}
+      \noindent\textbf{Vector Addition}
+
+      Follows from the addition of clif (two vector clifs).
+      
+      \noindent\textbf{Scalar Multiplication}
+
+      Follows from scalar multiplication of a vector clif.
+      
+      \noindent\textbf{Vector Subtraction}
+
+      Follows from scalar multiplication and addition of two vector clifs and 
+      the scalar -1.
+      
+      \noindent\textbf{Dot Product}
+
+      Follows from dot product of two vector clifs.
+
+      \noindent \textbf{Cross Product}
+      
+      The cross product can be defined using the wedge product~\cite{enwiki:1272926547}.
+      If we have two vectors (using the standard basis $\textbf{e}$) $\mathbf{u}= u_1\mathbf e_1+u_2\mathbf e_2+u_3\mathbf e_3$ 
+      and $\mathbf{v} = v_1\mathbf e_1+v_2\mathbf e_2+v_3\mathbf e_3$,
+      then the result is
+      $$\mathbf u \land \mathbf v = (u_1v_2 - u_2v_1)(\mathbf e_1 \land \mathbf e_2)+
+      (u_3v_1 - u_1v_3)(\mathbf e_3 \land \mathbf e_1)+
+      (u_2v_3 - u_3v_2)(\mathbf e_2 \land \mathbf e_3)$$
+
+      Here, the coefficients are the same as before, but the result is a bivector
+      instead of a vector.
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Matrix Representation in Geometric Algebra}
+      \begin{itemize}
+            \item In geometric algebra, a matrix can be represented as a linear transformation on 
+            a vector~\cite{Mathoma2019}.
+            \item That is, it is a function $\mathbf A : \mathbb{R}^m \to \mathbb{R}^n$, such that $\mathbf A(k\mathbf a + p\mathbf b)
+                  = k\mathbf A(\mathbf a) + p\mathbf A(\mathbf b)$.
+            \item We'll continue to use the boldface notation to indicate that the
+                  function is supposed to be a matrix.
+            \item We can use this definition to redefine the idea of a matrix
+                  in geometric algebra.
+      \end{itemize}
+\end{frame}
+
+
+%------------------------------------------------
+
+\begin{frame}{Matrix Operations in Geometric Algebra}
+
+      \only<1>{\noindent\textbf{Addition}
+      
+      \noindent The addition of two matrices is calculated as the addition
+      of the two functions representing those matrices, since they are linear
+      functions. That is,
+
+      $$\mathbf C(\mathbf v) = \mathbf A(\mathbf v) + \mathbf B(\mathbf v)$$
+      
+      \medskip
+      \noindent\textbf{Scalar Multiplication}
+      \noindent The scalar multiplication of a real number $s$ and a matrix represented by
+      $\mathbf A(v)$
+      is denoted as $s\mathbf{A}$ and is computed using the scalar product with the
+      resulting vector:
+
+      $$s\mathbf A(v)$$
+      
+      \medskip
+      \noindent\textbf{Subtraction}
+      
+      \noindent The subtraction of two matrices is denoted as $\mathbf{A} - \mathbf{B}$,
+      and is the addition of the scalar multiplication by -1, as before.
+      
+      $$(\mathbf A - \mathbf B)(v) = \mathbf{A}(v) + (-1)\mathbf{B}(v)$$}
+      
+      
+      \only<2>{\medskip
+      \noindent\textbf{Transposition}
+      
+      \noindent The \textit{transpose} of a matrix $\mathbf A(\mathbf v) : \mathbb{R}^m \to \mathbb{R}^n$ 
+      is the matrix $\mathbf{A}^T(\mathbf v) : \mathbb R^n \to \mathbb R^m$ such that the matrices
+      behave like the original definition:
+      
+      $$(\mathbf A^T)_{i,j} = \mathbf A_{j,i}$$
+      
+      \medskip
+      \noindent\textbf{Matrix Multiplication}
+      
+      \noindent The \textit{matrix multiplication} of matrices $\mathbf A(\mathbf v) : \mathbb R^m \to \mathbb R^p$ 
+      and $\mathbf A(\mathbf v) : \mathbb R^p \to \mathbb R^n$, is the
+      function composition of the two matrices:
+      
+      $$(\mathbf A\mathbf B)(\mathbf v) = (A \cdot B)(\mathbf v)$$}
+      
+      \medskip
+      \noindent\textbf{Other Operations}
+
+      Other described operations, like row operations and submatrix operations,
+      depend on matrix multiplication and thus follow from their descriptions earlier 
+      in this document. Their sizes will be encoded in the function type.
+      
+      \end{frame}
+
+%------------------------------------------------
+\section{Software Requirements}
+%------------------------------------------------
+
+\begin{frame}{Functional Requirements}
+      \begin{enumerate}
+\item<only@1> The system shall contain an internal representation of geometric algebra.
+\item<only@1> The system shall contain a smart constructor for vectors, represented using
+      geometric algebra internally.
+\item<only@1> The system shall contain a smart constructor for matrices, represented using
+      geometric algebra internally.
+\item<only@1> The system shall allow the specification of vector, and
+      matrix operations with fixed or variable sizes at specification-time.
+\item<only@1> The system shall support at least the vector, matrix operations
+      defined in this document.
+\item<only@1> The system shall allow the generation of documentation for vectors, matrices,
+      and generalized clifs.
+\item<only@1> The system shall allow the generation of code to perform the operations
+      for vectors, matrices, and generalized clifs.
+\item<only@1> The system shall ensure or check the validity of operations at specification 
+      time, generation-time, or runtime, as appropriate.
+\item<only@2> For a given problem specified using this extension, generated documents shall 
+      logically match the generated code for performing the given operations.
+\item<only@2> The addition of these new features to Drasil shall not break any existing
+      examples.
+      \end{enumerate}
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}{References}
-    \footnotesize
+    \tiny
     \bibliography {../../refs/References}
-    \bibliographystyle{apalike}
+    \bibliographystyle{plainnat}
 \end{frame}
 
 %------------------------------------------------
