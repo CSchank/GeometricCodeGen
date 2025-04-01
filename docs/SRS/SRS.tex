@@ -104,19 +104,19 @@
             \noindent Some examples of correctly-formed equations:
 
             \begin{itemize}
-            \item $x_i = a_{i,j}b_i$ is valid because $i$ is free on both the LHS and RHS
-            \item $a_i = A_{k,i}B_{k,j}x_j + C_{i,k}u_k$ is valid because $i$ is a free variable on
+            \item $x_i = a_{jj}b_j$ is valid because $i$ is free on both the LHS and RHS
+            \item $a_i = A_{ki}B_{kj}x_j + C_{ik}u_k$ is valid because $i$ is a free variable on
                   the LHS, and in every term it is the free variable on the RHS.
             \end{itemize}
 
             \noindent Some examples of incorrectly-formed equations:
 
             \begin{itemize}
-            \item $x_i = A_{j,i}$ is invalid because $i$ is the only free variable on the LHS, but
+            \item $x_i = A_{ji}$ is invalid because $i$ is the only free variable on the LHS, but
                   $i$ and $j$ are both free on the RHS.
-            \item $x_j = A{i,k}u_k$ is invalid because $j$ is free on the LHS, but $i$ is free on 
+            \item $x_j = A{ik}u_k$ is invalid because $j$ is free on the LHS, but $i$ is free on 
                   the RHS.
-            \item $x_i = A_{i,k}u_k + c_j$ is invalid because $i$ is free on the LHS, but on the 
+            \item $x_i = A_{ik}u_k + c_j$ is invalid because $i$ is free on the LHS, but on the 
                   RHS, one term has $i$ free while the other term has $j$ free.
             \end{itemize}}
 
@@ -155,7 +155,7 @@
       \noindent Two vectors with the same size can be added together. Adding them adds their
       components together. That is,
       
-      $$\mathbf{a} + \mathbf{b} = \mathbf{a}_i + \mathbf{b}_i$$
+      $$(\mathbf{a} + \mathbf{b})_i = \mathbf{a}_i + \mathbf{b}_i$$
       
       \noindent\textbf{Scalar Multiplication}
 
@@ -170,12 +170,12 @@
 
       Vector subtraction can be defined in terms of addition and scalar multiplication:
       
-      $$\mathbf{a} - \mathbf{b} = \mathbf{a}_i + (-1)\mathbf{b}_i$$}
+      $$(\mathbf{a} - \mathbf{b})_i = \mathbf{a}_i + (-1)\mathbf{b}_i$$}
       
       \only<2>{\noindent \textbf{Dot Product}
       
       The \textit{dot product} of two vectors each of size $n$ is represented by
-      $$\mathbf{a} \cdot \mathbf{b} = \mathbf{a}_i\mathbf{b}_i$$.
+      $$(\mathbf{a} \cdot \mathbf{b})_i = \mathbf{a}_i\mathbf{b}_i$$.
       Some notes:
       \begin{itemize}
             \item $a \cdot a = \|a\|^2$, where $\|a\|$ is the length of $a$
