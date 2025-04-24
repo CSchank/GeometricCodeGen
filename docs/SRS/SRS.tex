@@ -40,6 +40,14 @@
 %    PRESENTATION SLIDES
 %----------------------------------------------------------------------------------------
 
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
 \begin{document}
 
 \begin{frame}
@@ -733,6 +741,21 @@ Bivectors are added edge-to-edge, analogously to vectors' tip-to-tail placement.
                   \item This will be an object of grade $r$ if all vectors are linearly
                         independent, otherwise it will be 0.
             \end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Wedge Product Visually}
+
+
+\begin{itemize}
+      \item The wedge product can be seen as ``painting'' one clif using another.
+      \item This is illustrated in Figure~\ref{Fig:Painting}, from~{\color{red}\cite{henle2025clifford}}
+      \item In this figure, you $P$ is used to paint along $Q$ or vice-versa.
+      \begin{figure}
+            \includegraphics[width=0.7\textwidth]{Figs/WedgePainting.png}
+            \caption{Visualization of wedge product as painting}\label{Fig:Painting}
+      \end{figure}
 
 \end{itemize}
 \end{frame}
